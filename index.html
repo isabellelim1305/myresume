@@ -164,7 +164,7 @@
         <h2>✨ Skills</h2>
         <div class="badges">
             <span>Public finances</span><span>Budget planning & forecasting</span><span>Procurement</span>
-            <span>Excel</span><span>Business Object</span><span>Team management</span>
+            <span>I love Excel❤️</span><span>Business Object</span><span>Team management</span>
             <span>HTML</span><span>CSS</span><span>JavaScript</span>
         </div>
     </section>
@@ -200,7 +200,7 @@
   </footer>
 
 
-  <!-- Modal de contact -->
+<!-- Modal de contact -->
 <div id="contactModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="contactTitle" aria-hidden="true" tabindex="-1">
   <div class="modal-content" role="document">
     <button class="close-btn" aria-label="Fermer la fenêtre de contact">&times;</button>
@@ -223,8 +223,7 @@
   </div>
 </div>
 
-
-  <script>
+<script>
   const body = document.body;
   const modal = document.getElementById('contactModal');
   const form = document.getElementById('contactForm');
@@ -270,21 +269,41 @@
     }
   });
 
-  // Envoi du formulaire
-  if (!form.checkValidity()) {
+  // Envoi du formulaire avec fetch (AJAX)
+  form.addEventListener('submit', e => {
     e.preventDefault();
-    feedback.textContent = "Veuillez remplir tous les champs correctement.";
-    feedback.style.color = "red";
-    return;
-  }
 
-    // Simule une réponse réussie
-    feedback.textContent = "Merci 💜 Votre message a bien été envoyé.";
-    feedback.style.color = "var(--accent)";
-    form.reset();
+    if (!form.checkValidity()) {
+      feedback.textContent = "Veuillez remplir tous les champs correctement.";
+      feedback.style.color = "red";
+      return;
+    }
 
-    // Optionnel : fermer après délai
-    setTimeout(closeModal, 2500);
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        feedback.textContent = "Merci 💜 Votre message a bien été envoyé.";
+        feedback.style.color = "var(--accent)";
+        form.reset();
+        setTimeout(closeModal, 2500);
+      } else {
+        return response.json().then(data => {
+          throw new Error(data.message || "Erreur lors de l'envoi.");
+        });
+      }
+    })
+    .catch(error => {
+      feedback.textContent = "Une erreur s'est produite. Réessayez plus tard.";
+      feedback.style.color = "red";
+    });
   });
 </script>
 
