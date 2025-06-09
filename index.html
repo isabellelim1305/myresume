@@ -271,14 +271,12 @@
   });
 
   // Envoi du formulaire
-  form.addEventListener('submit', e => {
+  if (!form.checkValidity()) {
     e.preventDefault();
-
-    if (!form.checkValidity()) {
-      feedback.textContent = "Veuillez remplir tous les champs correctement.";
-      feedback.style.color = "red";
-      return;
-    }
+    feedback.textContent = "Veuillez remplir tous les champs correctement.";
+    feedback.style.color = "red";
+    return;
+  }
 
     // Simule une réponse réussie
     feedback.textContent = "Merci 💜 Votre message a bien été envoyé.";
